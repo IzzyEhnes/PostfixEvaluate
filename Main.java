@@ -54,6 +54,49 @@ class Node
 
 
 
+class Stack
+{
+    private Node top;
+
+
+
+    public Stack()
+    {
+
+    }
+
+
+
+    void push(char inChar)
+    {
+        Node nn = new Node(inChar);
+
+        nn.setNext(top);
+
+        top = nn;
+    }
+
+
+
+    String peek()
+    {
+        if (head == null)
+        {
+            return null;
+        }
+
+        else
+        {
+            return Character.toString(head.getValue());
+        }
+    }
+}
+
+
+
+
+
+
 public class Main
 {
 
@@ -66,5 +109,17 @@ public class Main
         String infixExpression = input.nextLine();
 
         System.out.println(infixExpression);
+
+        // Stack class tests
+
+        Stack myStack = new Stack();
+
+        System.out.println(myStack.peek());
+        myStack.push('K');
+        myStack.push('o');
+        System.out.println(myStack.peek());
+        myStack.push('n');
+        System.out.println(myStack.peek());
+        myStack.push('a');
     }
 }
