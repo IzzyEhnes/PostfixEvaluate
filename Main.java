@@ -78,6 +78,16 @@ class Stack
 
 
 
+    void pop()
+    {
+        if (!this.isEmpty())
+        {
+            top = top.getNext();
+        }
+    }
+
+
+
     String peek()
     {
         if (head == null)
@@ -88,6 +98,33 @@ class Stack
         else
         {
             return Character.toString(head.getValue());
+        }
+    }
+
+
+
+    boolean isEmpty()
+    {
+        if (top == null)
+        {
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+
+
+    void traverse()
+    {
+        Node current = new Node();
+
+        for (current = top; current != null; current = current.getNext())
+        {
+            System.out.println(current.getValue());
         }
     }
 }
@@ -119,7 +156,10 @@ public class Main
         myStack.push('o');
         System.out.println(myStack.peek());
         myStack.push('n');
-        System.out.println(myStack.peek());
         myStack.push('a');
+        System.out.println(myStack.peek());
+        myStack.traverse();
+        myStack.pop();
+        myStack.traverse();
     }
 }
