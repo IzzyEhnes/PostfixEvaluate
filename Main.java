@@ -134,6 +134,21 @@ class Stack
 
 
 
+class Queue
+{
+    private Node head;
+
+    public Queue()
+    {
+
+    }
+}
+
+
+
+
+
+
 public class Main
 {
 
