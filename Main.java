@@ -138,9 +138,90 @@ class Queue
 {
     private Node head;
 
+
+
     public Queue()
     {
 
+    }
+
+
+
+    void enqueue(char inChar)
+    {
+        Node nn = new Node();
+
+        nn.setValue(inChar);
+
+        nn.setNext(null);
+
+        if (head == null)
+        {
+            head = nn;
+        }
+
+        else
+        {
+            Node current = head;
+            while (current.getNext() != null)
+            {
+                current = current.getNext();
+            }
+
+            current.setNext(nn);
+        }
+    }
+
+
+
+    void dequeue()
+    {
+        if (head != null)
+        {
+            head = head.getNext();
+        }
+    }
+
+
+
+    String peek()
+    {
+        if (head == null)
+        {
+            return null;
+        }
+
+        else
+        {
+            return Character.toString(head.getValue());
+        }
+    }
+
+
+
+    boolean isEmpty()
+    {
+        if (head == null)
+        {
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+
+
+    void traverse()
+    {
+        Node current = new Node();
+
+        for (current = head; current != null; current = current.getNext())
+        {
+            System.out.println(current.getValue());
+        }
     }
 }
 
@@ -176,5 +257,21 @@ public class Main
         myStack.traverse();
         myStack.pop();
         myStack.traverse();
+
+        // Queue class tests
+        Queue myQ = new Queue();
+
+        myQ.enqueue('K');
+        myQ.enqueue('o');
+        myQ.enqueue('n');
+        myQ.enqueue('a');
+        myQ.traverse();
+
+        myQ.dequeue();
+        myQ.traverse();
+
+        myQ.enqueue('K');
+        System.out.println();
+        myQ.traverse();
     }
 }
