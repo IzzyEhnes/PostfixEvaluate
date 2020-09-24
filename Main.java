@@ -287,22 +287,44 @@ class Expression
     {
         String inExpression = this.expression;
 
-        Stack operators = new Stack();
+        Stack operatorStack = new Stack();
 
-        Queue postfix = new Queue();
+        Queue postfixQueue = new Queue();
 
         for (int i = 0; i < inExpression.length(); i++)
         {
-            if (isOperator(inExpression.charAt(i)))
+            char currentChar = inExpression.charAt(i);
+
+            System.out.print("\ncurrentChar: ");
+            System.out.println(currentChar);
+
+
+            // If current char is an operator, add to stack
+            if ((isOperator(currentChar) || currentChar == '(')  &&
+                    (operatorStack.isEmpty() ||
+                        precedenceCheck(currentChar) >= precedenceCheck(operatorStack.peek().charAt(0))))
             {
-                System.out.println("Yes");
+                operatorStack.push(currentChar);
             }
 
-            else
+            else if (currentChar == ')')
             {
-                System.out.println("No");
+                operatorStack.traverse();
+
+                while (operatorStack.peek().charAt(0) != '(' && !operatorStack.isEmpty())
+                {
+                    postfixQueue.enqueue(operatorStack.peek().charAt(0));
+                    operatorStack.pop();
+                }
+            }
+
+            else if (currentChar != ' ')
+            {
+                postfixQueue.enqueue(currentChar);
             }
         }
+
+        postfixQueue.traverse();
     }
 }
 
@@ -340,6 +362,7 @@ public class Main
         myStack.traverse();
          */
 
+        /*
         Queue myQ = new Queue();
 
         myQ.enqueue('K');
@@ -358,6 +381,8 @@ public class Main
         System.out.println();
 
         myQ.traverse();
+
+         */
 
         Expression ex = new Expression(infixExpression);
 
