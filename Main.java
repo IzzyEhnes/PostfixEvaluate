@@ -237,6 +237,73 @@ class Expression
     {
 
     }
+
+
+    public Expression(String inExpression)
+    {
+        expression = inExpression;
+    }
+
+
+
+    boolean isOperator(char inChar)
+    {
+        switch (inChar)
+        {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+
+
+    int precedenceCheck(char inOperator)
+    {
+        if (inOperator == '*' || inOperator == '/')
+        {
+            return 2;
+        }
+
+        else if (inOperator == '+' || inOperator == '-')
+        {
+            return 1;
+        }
+
+        else
+        {
+            return 0;
+        }
+    }
+
+
+
+    void infixToPostfix()
+    {
+        String inExpression = this.expression;
+
+        Stack operators = new Stack();
+
+        Queue postfix = new Queue();
+
+        for (int i = 0; i < inExpression.length(); i++)
+        {
+            if (isOperator(inExpression.charAt(i)))
+            {
+                System.out.println("Yes");
+            }
+
+            else
+            {
+                System.out.println("No");
+            }
+        }
+    }
 }
 
 
@@ -291,5 +358,9 @@ public class Main
         System.out.println();
 
         myQ.traverse();
+
+        Expression ex = new Expression(infixExpression);
+
+        ex.infixToPostfix();
     }
 }
