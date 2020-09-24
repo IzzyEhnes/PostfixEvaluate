@@ -53,7 +53,6 @@ class Node
 
 
 
-
 class Stack
 {
     private Node top;
@@ -90,14 +89,14 @@ class Stack
 
     String peek()
     {
-        if (head == null)
+        if (top == null)
         {
             return null;
         }
 
         else
         {
-            return Character.toString(head.getValue());
+            return Character.toString(top.getValue());
         }
     }
 
@@ -137,8 +136,6 @@ class Stack
 class Queue
 {
     private Node head;
-
-
 
     public Queue()
     {
@@ -230,6 +227,24 @@ class Queue
 
 
 
+class Expression
+{
+    private String expression;
+
+
+
+    public Expression()
+    {
+
+    }
+}
+
+
+
+
+
+
+
 public class Main
 {
 
@@ -243,8 +258,7 @@ public class Main
 
         System.out.println(infixExpression);
 
-        // Stack class tests
-
+        /*
         Stack myStack = new Stack();
 
         System.out.println(myStack.peek());
@@ -257,21 +271,25 @@ public class Main
         myStack.traverse();
         myStack.pop();
         myStack.traverse();
+         */
 
-        // Queue class tests
         Queue myQ = new Queue();
 
         myQ.enqueue('K');
         myQ.enqueue('o');
         myQ.enqueue('n');
         myQ.enqueue('a');
+
         myQ.traverse();
 
         myQ.dequeue();
+
         myQ.traverse();
 
         myQ.enqueue('K');
+
         System.out.println();
+
         myQ.traverse();
     }
 }
