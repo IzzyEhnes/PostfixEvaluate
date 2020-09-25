@@ -263,6 +263,26 @@ class Expression
 
 
 
+    boolean isOperand(char inChar)
+    {
+        switch (inChar)
+        {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '(':
+            case ')':
+            case ' ':
+                return false;
+
+            default:
+                return true;
+        }
+    }
+
+
+
     int precedenceCheck(char inOperator)
     {
         if (inOperator == '*' || inOperator == '/')
@@ -283,7 +303,7 @@ class Expression
 
 
 
-    void infixToPostfix()
+    Queue infixToPostfix()
     {
         String inExpression = this.expression;
 
@@ -295,39 +315,54 @@ class Expression
         {
             char currentChar = inExpression.charAt(i);
 
-            System.out.print("\ncurrentChar: ");
-            System.out.println(currentChar);
-
-
-            // If current char is an operator, add to stack
-            if ((isOperator(currentChar) || currentChar == '(')  &&
-                    (operatorStack.isEmpty() ||
-                        precedenceCheck(currentChar) >= precedenceCheck(operatorStack.peek().charAt(0))))
+            if (currentChar == '(')
             {
                 operatorStack.push(currentChar);
             }
 
+            else if (isOperand(currentChar))
+            {
+                postfixQueue.enqueue(currentChar);
+            }
+
             else if (currentChar == ')')
             {
-                operatorStack.traverse();
-
                 while (operatorStack.peek().charAt(0) != '(' && !operatorStack.isEmpty())
+                {
+                    postfixQueue.enqueue(operatorStack.peek().charAt(0));
+
+                    operatorStack.pop();
+                }
+
+                operatorStack.pop();
+            }
+
+            else if (isOperator(currentChar))
+            {
+                while (!operatorStack.isEmpty() &&
+                        precedenceCheck(operatorStack.peek().charAt(0)) >= precedenceCheck(currentChar) &&
+                            operatorStack.peek().charAt(0) != '(' &&
+                                operatorStack.peek().charAt(0) != ')')
                 {
                     postfixQueue.enqueue(operatorStack.peek().charAt(0));
                     operatorStack.pop();
                 }
-            }
 
-            else if (currentChar != ' ')
-            {
-                postfixQueue.enqueue(currentChar);
+                operatorStack.push(currentChar);
             }
         }
 
+        while (!operatorStack.isEmpty())
+        {
+            postfixQueue.enqueue(operatorStack.peek().charAt(0));
+            operatorStack.pop();
+        }
+
         postfixQueue.traverse();
+
+        return postfixQueue;
     }
 }
-
 
 
 
