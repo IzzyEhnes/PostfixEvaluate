@@ -2,9 +2,9 @@ import java.util.Scanner;
 
 
 
-class Node
+class Node<T>
 {
-    private char value;
+    private T value;
 
     private Node next;
 
@@ -15,21 +15,21 @@ class Node
 
 
 
-    public Node(char inValue)
+    public Node(T inValue)
     {
         this.value = inValue;
     }
 
 
 
-    char getValue()
+    T getValue()
     {
         return value;
     }
 
 
 
-    void setValue(char inValue)
+    void setValue(T inValue)
     {
         this.value = inValue;
     }
@@ -53,9 +53,9 @@ class Node
 
 
 
-class Stack
+class Stack<T>
 {
-    private Node top;
+    private Node<T> top;
 
 
 
@@ -66,9 +66,9 @@ class Stack
 
 
 
-    void push(char inChar)
+    void push(T inVal)
     {
-        Node nn = new Node(inChar);
+        Node nn = new Node(inVal);
 
         nn.setNext(top);
 
@@ -87,7 +87,7 @@ class Stack
 
 
 
-    String peek()
+    T peek()
     {
         if (top == null)
         {
@@ -96,7 +96,7 @@ class Stack
 
         else
         {
-            return Character.toString(top.getValue());
+            return top.getValue();
         }
     }
 
@@ -133,9 +133,9 @@ class Stack
 
 
 
-class Queue
+class Queue<T>
 {
-    private Node head;
+    private Node<T> head;
 
     public Queue()
     {
@@ -144,11 +144,11 @@ class Queue
 
 
 
-    void enqueue(char inChar)
+    void enqueue(T inVal)
     {
         Node nn = new Node();
 
-        nn.setValue(inChar);
+        nn.setValue(inVal);
 
         nn.setNext(null);
 
@@ -181,7 +181,7 @@ class Queue
 
 
 
-    String peek()
+    T peek()
     {
         if (head == null)
         {
@@ -190,7 +190,7 @@ class Queue
 
         else
         {
-            return Character.toString(head.getValue());
+            return head.getValue();
         }
     }
 
@@ -303,13 +303,45 @@ class Expression
 
 
 
+    int calculate(int leftOperand, int rightOperand, char symbol)
+    {
+        int result = 0;
+
+        switch (symbol)
+        {
+            case '+':
+                result = leftOperand + rightOperand;
+                break;
+
+            case '-':
+                result = leftOperand - rightOperand;
+                break;
+
+            case '*':
+                result = leftOperand * rightOperand;
+                break;
+
+            case '/':
+                result = leftOperand / rightOperand;
+                break;
+
+            default:
+                return -1;
+        }
+
+        return result;
+    }
+
+
+
+
     Queue infixToPostfix()
     {
         String inExpression = this.expression;
 
-        Stack operatorStack = new Stack();
+        Stack<Character> operatorStack = new Stack();
 
-        Queue postfixQueue = new Queue();
+        Queue<Character> postfixQueue = new Queue();
 
         for (int i = 0; i < inExpression.length(); i++)
         {
@@ -327,9 +359,9 @@ class Expression
 
             else if (currentChar == ')')
             {
-                while (operatorStack.peek().charAt(0) != '(' && !operatorStack.isEmpty())
+                while (operatorStack.peek() != '(' && !operatorStack.isEmpty())
                 {
-                    postfixQueue.enqueue(operatorStack.peek().charAt(0));
+                    postfixQueue.enqueue(operatorStack.peek());
 
                     operatorStack.pop();
                 }
@@ -340,11 +372,11 @@ class Expression
             else if (isOperator(currentChar))
             {
                 while (!operatorStack.isEmpty() &&
-                        precedenceCheck(operatorStack.peek().charAt(0)) >= precedenceCheck(currentChar) &&
-                            operatorStack.peek().charAt(0) != '(' &&
-                                operatorStack.peek().charAt(0) != ')')
+                        precedenceCheck(operatorStack.peek()) >= precedenceCheck(currentChar) &&
+                            operatorStack.peek() != '(' &&
+                                operatorStack.peek() != ')')
                 {
-                    postfixQueue.enqueue(operatorStack.peek().charAt(0));
+                    postfixQueue.enqueue(operatorStack.peek());
                     operatorStack.pop();
                 }
 
@@ -354,7 +386,7 @@ class Expression
 
         while (!operatorStack.isEmpty())
         {
-            postfixQueue.enqueue(operatorStack.peek().charAt(0));
+            postfixQueue.enqueue(operatorStack.peek());
             operatorStack.pop();
         }
 
@@ -363,6 +395,8 @@ class Expression
         return postfixQueue;
     }
 }
+
+
 
 
 
@@ -421,6 +455,6 @@ public class Main
 
         Expression ex = new Expression(infixExpression);
 
-        ex.infixToPostfix();
+        Queue postfixQueue = ex.infixToPostfix();
     }
 }
