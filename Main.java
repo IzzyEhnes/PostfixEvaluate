@@ -217,7 +217,7 @@ class Queue<T>
 
         for (current = head; current != null; current = current.getNext())
         {
-            System.out.println(current.getValue());
+            System.out.print(current.getValue());
         }
     }
 }
@@ -226,27 +226,9 @@ class Queue<T>
 
 
 
-
-class Expression
+class Postfix
 {
-    private String expression;
-
-
-
-    public Expression()
-    {
-
-    }
-
-
-    public Expression(String inExpression)
-    {
-        expression = inExpression;
-    }
-
-
-
-    boolean isOperator(char inChar)
+    static boolean isOperator(char inChar)
     {
         switch (inChar)
         {
@@ -263,7 +245,7 @@ class Expression
 
 
 
-    boolean isOperand(char inChar)
+    static boolean isOperand(char inChar)
     {
         switch (inChar)
         {
@@ -283,7 +265,7 @@ class Expression
 
 
 
-    int precedenceCheck(char inOperator)
+    static int precedenceCheck(char inOperator)
     {
         if (inOperator == '*' || inOperator == '/')
         {
@@ -303,7 +285,7 @@ class Expression
 
 
 
-    int calculate(int leftOperand, int rightOperand, char symbol)
+    static int calculate(int leftOperand, int rightOperand, char symbol)
     {
         int result = 0;
 
@@ -334,11 +316,8 @@ class Expression
 
 
 
-
-    Queue infixToPostfix()
+    static Queue infixToPostfix(String inExpression)
     {
-        String inExpression = this.expression;
-
         Stack<Character> operatorStack = new Stack();
 
         Queue<Character> postfixQueue = new Queue();
@@ -373,8 +352,8 @@ class Expression
             {
                 while (!operatorStack.isEmpty() &&
                         precedenceCheck(operatorStack.peek()) >= precedenceCheck(currentChar) &&
-                            operatorStack.peek() != '(' &&
-                                operatorStack.peek() != ')')
+                        operatorStack.peek() != '(' &&
+                        operatorStack.peek() != ')')
                 {
                     postfixQueue.enqueue(operatorStack.peek());
                     operatorStack.pop();
@@ -395,7 +374,7 @@ class Expression
 
 
 
-    int evaluatePostfix(Queue<Character> inQueue)
+    static int evaluatePostfix(Queue<Character> inQueue)
     {
         int answer = 0;
 
@@ -442,11 +421,8 @@ class Expression
 
 
 
-
-
 public class Main
 {
-
     public static void main(String[] args)
     {
         Scanner input = new Scanner(System.in);
@@ -455,52 +431,12 @@ public class Main
 
         String infixExpression = input.nextLine();
 
-        System.out.println(infixExpression);
+        Queue postfixQueue = Postfix.infixToPostfix(infixExpression);
 
-        /*
-        Stack myStack = new Stack();
+        System.out.print("\nPostfix expression: ");
+        postfixQueue.traverse();
 
-        System.out.println(myStack.peek());
-        myStack.push('K');
-        myStack.push('o');
-        System.out.println(myStack.peek());
-        myStack.push('n');
-        myStack.push('a');
-        System.out.println(myStack.peek());
-        myStack.traverse();
-        myStack.pop();
-        myStack.traverse();
-         */
-
-        /*
-        Queue myQ = new Queue();
-
-        myQ.enqueue('K');
-        myQ.enqueue('o');
-        myQ.enqueue('n');
-        myQ.enqueue('a');
-
-        myQ.traverse();
-
-        myQ.dequeue();
-
-        myQ.traverse();
-
-        myQ.enqueue('K');
-
-        System.out.println();
-
-        myQ.traverse();
-
-         */
-
-        Expression ex = new Expression(infixExpression);
-
-        Queue postfixQueue = ex.infixToPostfix();
-
-        //postfixQueue.traverse();
-
-        System.out.print("Answer: ");
-        System.out.println(ex.evaluatePostfix(postfixQueue));
+        System.out.print("\nAnswer: ");
+        System.out.println(Postfix.evaluatePostfix(postfixQueue));
     }
 }
