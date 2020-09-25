@@ -390,9 +390,50 @@ class Expression
             operatorStack.pop();
         }
 
-        postfixQueue.traverse();
-
         return postfixQueue;
+    }
+
+
+
+    int evaluatePostfix(Queue<Character> inQueue)
+    {
+        int answer = 0;
+
+        Stack<Integer> evaluateStack = new Stack();
+
+        while (!inQueue.isEmpty())
+        {
+            if (isOperand(inQueue.peek()))
+            {
+                evaluateStack.push(inQueue.peek() - '0');
+
+                inQueue.dequeue();
+            }
+
+            else if (isOperator(inQueue.peek()))
+            {
+                char symbol = inQueue.peek();
+
+                inQueue.dequeue();
+
+                int leftOperand;
+                int rightOperand;
+
+                rightOperand = evaluateStack.peek();
+
+                evaluateStack.pop();
+
+                leftOperand = evaluateStack.peek();
+
+                evaluateStack.pop();
+
+                answer = calculate(leftOperand, rightOperand, symbol);
+
+                evaluateStack.push(answer);
+            }
+        }
+
+        return  answer;
     }
 }
 
@@ -456,5 +497,10 @@ public class Main
         Expression ex = new Expression(infixExpression);
 
         Queue postfixQueue = ex.infixToPostfix();
+
+        //postfixQueue.traverse();
+
+        System.out.print("Answer: ");
+        System.out.println(ex.evaluatePostfix(postfixQueue));
     }
 }
